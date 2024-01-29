@@ -4,7 +4,8 @@ import { RecentDoc } from '@/ui/components/docs/RecentDoc/RecentDoc';
 
 export default function Docs() {
   // @FIXME: why no page loading screen?
-  fetchAllPosts().then((docs) => console.log(`Fetched ${docs.length} docs`));
+  fetchAllPosts();
+
   return (
     <div>
       <DocsInfo docs={[]} />

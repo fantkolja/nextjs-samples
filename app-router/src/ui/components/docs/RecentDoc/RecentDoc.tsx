@@ -6,14 +6,14 @@ export interface RecentDocProps {
 }
 
 export const RecentDoc: React.FC<RecentDocProps> = ({ id }) => {
-  fetchPost(id).then(console.log);
+  fetchPost(id);
   return (
-    <div>
-      <h2 className="text-4xl">
-        {id}
+    <div className="max-w-48">
+      <h2 className="text-xl mb-2">
+        doc.title
       </h2>
-      <p className="text-center">
-        total:
+      <p className="">
+        doc.body
       </p>
     </div>
   );
