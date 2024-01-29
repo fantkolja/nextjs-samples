@@ -6,10 +6,6 @@ export default function Docs() {
     .then(response => response.json())
     .then(json => console.log(json))
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Header />
-      <h2 className="text-4xl">Docs</h2>
-      <Menu />
-    </main>
+    <h2 className="text-4xl">Docs</h2>
   );
 }
