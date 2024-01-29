@@ -1,4 +1,3 @@
-import { Post } from '@/types/posts';
 import { fetchPost } from '@/server/actions/fetcher';
 
 export interface RecentDocProps {
