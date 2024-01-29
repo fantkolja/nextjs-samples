@@ -1,5 +1,5 @@
 export default function DocsLoading() {
   return (
-    <p>Loading...</p>
+    <p>Loading data...</p>
   );
 }
