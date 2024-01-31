@@ -1,4 +1,4 @@
-import { fetchAllPosts } from '@/server/actions/fetcher';
+import { fetchAllPosts } from '@/server/data/fetcher';
 import { DocsInfo } from '@/ui/components/docs/DocsInfo/DocsInfo';
 import { RecentDoc } from '@/ui/components/docs/RecentDoc/RecentDoc';
 
