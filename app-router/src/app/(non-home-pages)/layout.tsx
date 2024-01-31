@@ -1,12 +1,20 @@
 import { Header } from '@/ui/components/common/Header/Header';
 import { Menu } from '@/ui/components/common/Menu/Menu';
 import { LayoutProps } from '@/types/page';
+import { ReactNode } from 'react';
 
-export default function NonHomePageLayout({ children }: LayoutProps) {
+interface LayoutSlots {
+  article: ReactNode;
+}
+
+const IS_LEARNING_ENABLED = false;
+
+export default function NonHomePageLayout({ children, article }: LayoutProps & LayoutSlots) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Menu />
       {children}
+      {article}
       <Header />
     </main>
   );
