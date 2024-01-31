@@ -1,5 +1,7 @@
-export default function Learn() {
+export default async function Learn() {
   return (
-    <h2 className="text-4xl">Learn</h2>
+    <h2 className="text-4xl">
+      Learn
+    </h2>
   );
 }

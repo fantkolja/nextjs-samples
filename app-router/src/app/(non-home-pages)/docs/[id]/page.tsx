@@ -1,4 +1,4 @@
-import { fetchPost } from '@/server/actions/fetcher';
+import { fetchPost } from '@/server/data/fetcher';
 import { PageProps } from '@/types/page';
 
 interface DocDetailsPageParams {
