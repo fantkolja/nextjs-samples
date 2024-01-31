@@ -1,7 +1,6 @@
 import { sleep } from '@/server/data/fetcher';
 
 export default async function ReadArticlePage() {
-  await sleep(3000);
   return (
     <div>
       <h2 className="text-2xl">Read Article</h2>
