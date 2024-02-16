@@ -1,6 +1,7 @@
 import { LayoutProps } from '@/types/page';
 import { ReactNode } from 'react';
 import { Card } from '@/ui/components/common/Card/Card';
+import { ArticleTabs } from '@/ui/components/learn/ArticleTabs/ArticleTabs';
 
 interface LayoutSlots {
   read: ReactNode;
@@ -11,7 +12,7 @@ export default function LearnLayout({ children, read, edit }: LayoutProps & Layo
   return (
     <div className="flex flex-col gap-6 items-center w-full">
       {children}
-      {/*<ArticleTabs />*/}
+      <ArticleTabs />
       <div className="flex gap-4 mt-6 items-center justify-between w-full">
         <Card className="w-1/2 h-96">
           {read}
