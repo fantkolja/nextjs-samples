@@ -6,7 +6,7 @@ import { getCustomers } from '@/server/data/db';
 
 export default async function Home() {
   const customers = await getCustomers();
-  console.log(customers);
+  // console.log(customers);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Header/>
