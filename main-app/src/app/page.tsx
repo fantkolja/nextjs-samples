@@ -11,7 +11,7 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Header/>
       <Logo/>
-
+      <p>{process.env.NEXT_PUBLIC_ENV_WELCOME}</p>
       <Menu/>
     </main>
   );
