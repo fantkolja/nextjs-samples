@@ -1,10 +1,7 @@
-import { createPool, sql } from '@vercel/postgres';
-// const pool = createPool({
-//   connectionString: process.env.POSTGRES_URL,
-// });
-// await pool.connect();
+import { sql } from '@vercel/postgres';
 
 export const getCustomers = async () => {
+  console.log('[DB] Query Customers');
   // const data = await pool.sql<any>`SELECT * FROM customers`;
   const data = await sql<any>`SELECT * FROM customers`;
 
