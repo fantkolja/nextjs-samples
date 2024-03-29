@@ -3,7 +3,7 @@ import { CustomerPayload } from '@/types/customer';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const email = new URL(request.url).searchParams.get('email');
+  const email = request.nextUrl.searchParams.get('email');
   const customers = email ? await getCustomersByEmail(email) : await getCustomers();
 
   return Response.json({ customers });
