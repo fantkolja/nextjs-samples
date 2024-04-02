@@ -7,12 +7,14 @@ export interface PageParams {
 }
 
 export async function DELETE(_req: NextRequest, { params }: { params: PageParams }) {
+  // @TODO: add validation stage
   const result = await deleteCustomer(params.id);
 
   return Response.json({ count: result.rowCount });
 }
 
 export async function PATCH(request: NextRequest, { params }: { params: PageParams }) {
+  // @TODO: add validation stage
   const updatedFields = await request.json();
   const result = await updateCustomer(params.id, updatedFields as Partial<CustomerPayload>);
 
