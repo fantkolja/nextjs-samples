@@ -4,6 +4,7 @@ const { customers} = require('../mocks/customers');
 const { invoices} = require('../mocks/invoices');
 const { revenue } = require('../mocks/revenue');
 const bcrypt = require('bcrypt');
+const {PASSWORD_HASH_SALT} = require('../src/server/config');
 
 async function seedUsers(client) {
 	try {
@@ -23,7 +24,7 @@ async function seedUsers(client) {
 		// Insert data into the "users" table
 		const insertedUsers = await Promise.all(
 			users.map(async (user) => {
-				const hashedPassword = await bcrypt.hash(user.password, 10);
+				const hashedPassword = await bcrypt.hash(user.password, PASSWORD_HASH_SALT);
 				return client.sql`
         INSERT INTO users (id, name, email, password)
         VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
