@@ -29,11 +29,8 @@ export async function login(email: string, password: string) {
 
   const user = await getUserByEmail(email);
 
-  console.log(user);
-
   if (user) {
     let doesPasswordMatch = await bcrypt.compare(password, user.password);
-    console.log(doesPasswordMatch);
 
     if (doesPasswordMatch) {
       const expires = new Date(Date.now() + SESSION_DURATION);
