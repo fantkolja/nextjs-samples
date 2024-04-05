@@ -1,12 +1,12 @@
 import { sql } from '@vercel/postgres';
 import { Customer, CustomerPayload } from '@/types/customer';
-import bcrypt from 'bcrypt';
-import { UserPayload } from '@/types/user';
+import bcrypt from 'bcryptjs';
+import { User, UserDBEntry, UserPayload } from '@/types/user';
 
 export const getCustomers = async () => {
   console.log('[DB] Query Customers');
   const data = await sql<Customer>`SELECT * FROM customers`;
-  console.log('[DB] Received Customers', data.rows.length);
+  console.log('[DB] Received Customers', data.rows);
   return data.rows;
 };
 
@@ -56,3 +56,14 @@ export const createUser = async (user: UserPayload) => {
     VALUES (${user.name}, ${user.email}, ${hashedPassword});
   `;
 }
+
+export const getUserByEmail = async (email: string): Promise<UserDBEntry | null> => {
+  console.log('[DB] Query User', email);
+  const data = await sql<UserDBEntry>`
+    SELECT *
+    FROM users
+    WHERE email = ${email};
+  `;
+  console.log('[DB] Received User', data.rows);
+  return data.rows[0] || null;
+};

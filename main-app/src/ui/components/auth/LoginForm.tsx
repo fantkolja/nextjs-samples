@@ -4,9 +4,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/ui/components/common/Button/Button';
-import { login } from '@/server/auth-utils';
+import { login } from '@/app/auth-utils';
 import { redirect } from 'next/navigation';
-import bcrypt from 'bcrypt';
 
 export interface LoginFormData {
   email: string;
@@ -18,7 +17,7 @@ export default function LoginForm() {
     'use server'
     await login(
       formData.get('email') as string,
-      await bcrypt.hash(formData.get('password') as string, parseInt(process.env.PASSWORD_HASH_SALT as string)),
+      formData.get('password') as string,
     );
     redirect('/');
   };

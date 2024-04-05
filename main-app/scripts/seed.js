@@ -3,7 +3,7 @@ const { users} = require('../mocks/users');
 const { customers} = require('../mocks/customers');
 const { invoices} = require('../mocks/invoices');
 const { revenue } = require('../mocks/revenue');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 async function seedUsers(client) {
 	try {
