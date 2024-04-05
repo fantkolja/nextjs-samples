@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/ui/components/common/Button/Button';
-import { login } from '@/app/auth-utils';
+import { login } from '@/server/auth-utils';
 import { redirect } from 'next/navigation';
 import { createUser } from '@/server/data/db';
 
