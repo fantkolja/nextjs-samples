@@ -1,7 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { Customer, CustomerPayload } from '@/types/customer';
 import bcrypt from 'bcrypt';
-import { PASSWORD_HASH_SALT } from '@/server/config';
 import { UserPayload } from '@/types/user';
 
 export const getCustomers = async () => {
@@ -51,7 +50,7 @@ export const updateCustomer = async (id: Customer['id'], updatedFields: Partial<
 }
 
 export const createUser = async (user: UserPayload) => {
-  const hashedPassword = await bcrypt.hash(user.password, PASSWORD_HASH_SALT);
+  const hashedPassword = await bcrypt.hash(user.password, parseInt(process.env.PASSWORD_HASH_SALT as string));
   return sql`
     INSERT INTO users (name, email, password)
     VALUES (${user.name}, ${user.email}, ${hashedPassword});
