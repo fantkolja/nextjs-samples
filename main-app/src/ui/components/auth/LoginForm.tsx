@@ -1,11 +1,7 @@
-import {
-  AtSymbolIcon,
-  KeyIcon,
-} from '@heroicons/react/24/outline';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/ui/components/common/Button/Button';
-import { login } from '@/server/auth-utils';
-import { redirect } from 'next/navigation';
+import { signIn } from '@/server/auth-utils';
+import { AtSymbolIcon, KeyIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
 export interface LoginFormData {
   email: string;
@@ -15,66 +11,99 @@ export interface LoginFormData {
 export default function LoginForm() {
   const onSubmit = async (formData: FormData) => {
     'use server'
-    await login(
-      formData.get('email') as string,
-      formData.get('password') as string,
-    );
-    redirect('/');
+    await signIn('credentials');
+    // await login(
+    //   formData.get('email') as string,
+    //   formData.get('password') as string,
+    // );
+    // redirect('/');
   };
   return (
-    <form className="space-y-3 w-full" action={onSubmit}>
-      <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8 text-gray-900">
-        <h1 className={`mb-3 text-2xl text-black text-center`}>
-          Sign in
-        </h1>
-        <div className="w-full">
-          <div>
-            <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <div className="relative">
-              <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                id="email"
-                type="email"
-                name="email"
-                placeholder="Enter your email address"
-                required
-              />
-              <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+    <div>
+      <form className="space-y-3 w-full" action={onSubmit}>
+        <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8 text-gray-900">
+          <h1 className="mb-3 text-2xl text-black text-center">
+            Sign in
+          </h1>
+          <div className="w-full">
+            <div>
+              <label
+                className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <div className="relative">
+                <input
+                  className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email address"
+                  required
+                />
+                <AtSymbolIcon
+                  className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
+              </div>
+            </div>
+            <div className="mt-4">
+              <label
+                className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                  id="password"
+                  type="password"
+                  name="password"
+                  placeholder="Enter password"
+                  required
+                  minLength={6}
+                />
+                <KeyIcon
+                  className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
+              </div>
             </div>
           </div>
-          <div className="mt-4">
-            <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                required
-                minLength={6}
-              />
-              <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-            </div>
+          <Button className="mt-4 w-full bg-blue-700">
+            Sign in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50"/>
+          </Button>
+          <div className="flex h-8 items-end space-x-1">
+            {/* Add form errors here */}
           </div>
         </div>
-        <Button className="mt-4 w-full bg-blue-700">
-          Sign in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
-        </Button>
-        <div className="flex h-8 items-end space-x-1">
-          {/* Add form errors here */}
-        </div>
+      </form>
+      <div className="flex gap-4 justify-between">
+        <form
+          className="w-1/2"
+          action={async () => {
+            'use server';
+            await signIn('github');
+          }}
+        >
+          <Button
+            className="mt-4 w-full !bg-white !text-black !justify-center"
+          >
+            GitHub
+          </Button>
+        </form>
+        <form
+          className="w-1/2"
+          action={async () => {
+            'use server';
+            await signIn('google');
+          }}
+        >
+          <Button
+            className="mt-4 w-full !bg-white !text-black !justify-center"
+          >
+            Google
+          </Button>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
