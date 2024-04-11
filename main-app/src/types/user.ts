@@ -4,7 +4,7 @@ export interface User {
 }
 
 export interface UserPayload extends User {
-  password: string;
+  password: string | null;
 }
 
 export interface UserDBEntry extends UserPayload {

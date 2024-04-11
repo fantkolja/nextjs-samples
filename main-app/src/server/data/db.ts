@@ -50,7 +50,7 @@ export const updateCustomer = async (id: Customer['id'], updatedFields: Partial<
 }
 
 export const createUser = async (user: UserPayload) => {
-  const hashedPassword = await bcrypt.hash(user.password, parseInt(process.env.PASSWORD_HASH_SALT as string));
+  const hashedPassword = user.password ? await bcrypt.hash(user.password, parseInt(process.env.PASSWORD_HASH_SALT as string)) : null;
   return sql`
     INSERT INTO users (name, email, password)
     VALUES (${user.name}, ${user.email}, ${hashedPassword});

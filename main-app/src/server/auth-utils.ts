@@ -2,7 +2,7 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { User } from '@/types/user';
-import { getUserByEmail } from '@/server/data/db';
+import { createUser, getUserByEmail } from '@/server/data/db';
 import bcrypt from 'bcryptjs';
 
 // const SESSION_COOKIE_NAME = 'session';
@@ -72,9 +72,20 @@ import bcrypt from 'bcryptjs';
 
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
-import NextAuth, { NextAuthConfig } from 'next-auth';
+import NextAuth, { Account, NextAuthConfig, Profile } from 'next-auth';
+
+const isAccountVerified = (account: Account | null, profile?: Profile): boolean => {
+  return account?.provider !== 'google' || !!profile?.email_verified;
+}
+
+export const isPrivateResource = (pathname: string) => {
+  return !pathname.startsWith('/sign-in') && !pathname.startsWith('/sign-up');
+}
 
 export const nextAuth: NextAuthConfig = {
+  session: {
+    strategy: 'jwt',
+  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID,
@@ -87,8 +98,17 @@ export const nextAuth: NextAuthConfig = {
   ],
   callbacks: {
     async signIn({ account, profile }) {
-      if (account?.provider === 'google') {
-        return !!profile?.email_verified;
+      if (!isAccountVerified(account, profile) || !profile?.email) {
+        return false;
+      }
+      // create a user if needed
+      const user = await getUserByEmail(profile.email);
+      if (!user) {
+        await createUser({
+          name: profile.name || profile.email.split('@')[0] as string,
+          email: profile.email,
+          password: null,
+        });
       }
       return true;
     },
