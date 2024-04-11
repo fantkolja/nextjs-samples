@@ -1,78 +1,27 @@
-import { SignJWT, jwtVerify } from "jose";
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
 import { User } from '@/types/user';
 import { createUser, getUserByEmail } from '@/server/data/db';
 import bcrypt from 'bcryptjs';
-
-// const SESSION_COOKIE_NAME = 'session';
-// const SESSION_DURATION_IN_SECONDS = 10;
-// const SESSION_DURATION = SESSION_DURATION_IN_SECONDS * 1000;
-// const jwtSecret = new TextEncoder().encode(process.env.AUTH_SECRET);
-//
-// export async function encrypt(payload: { user: User, expires: Date }) {
-//   return await new SignJWT(payload)
-//     .setProtectedHeader({ alg: 'HS256' })
-//     .setIssuedAt()
-//     .setExpirationTime(`${SESSION_DURATION_IN_SECONDS} sec from now`)
-//     .sign(jwtSecret);
-// }
-//
-// export async function decrypt(input: string): Promise<any> {
-//   const { payload } = await jwtVerify(input, jwtSecret, {
-//     algorithms: ["HS256"],
-//   });
-//   return payload;
-// }
-//
-// export async function login(email: string, password: string) {
-//   let isLoggedIn = false;
-//
-//   const user = await getUserByEmail(email);
-//
-//   if (user) {
-//     let doesPasswordMatch = await bcrypt.compare(password, user.password);
-//
-//     if (doesPasswordMatch) {
-//       const expires = new Date(Date.now() + SESSION_DURATION);
-//       const session = await encrypt({ user: user as unknown as User, expires });
-//
-//       cookies().set(SESSION_COOKIE_NAME, session, { expires, httpOnly: true });
-//       isLoggedIn = true;
-//     }
-//   }
-//   return isLoggedIn;
-// }
-//
-// export async function logout() {
-//   cookies().set(SESSION_COOKIE_NAME, "", { expires: new Date(0) });
-// }
-//
-// export async function getSession() {
-//   const session = cookies().get(SESSION_COOKIE_NAME)?.value;
-//   if (!session) return null;
-//   return await decrypt(session);
-// }
-//
-// export async function refreshSession(request: NextRequest) {
-//   const session = request.cookies.get(SESSION_COOKIE_NAME)?.value;
-//   if (!session) return;
-//
-//   const parsed = await decrypt(session);
-//   parsed.expires = new Date(Date.now() + SESSION_DURATION);
-//   const res = NextResponse.next();
-//   res.cookies.set({
-//     name: SESSION_COOKIE_NAME,
-//     value: await encrypt(parsed),
-//     httpOnly: true,
-//     expires: parsed.expires,
-//   });
-//   return res;
-// }
-
+import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import NextAuth, { Account, NextAuthConfig, Profile } from 'next-auth';
+
+const isOIDC = (account: Account | null): boolean => {
+  return account?.provider === 'google' || account?.provider === 'github';
+}
+
+const createOIDCUser = async (profile: Profile) => {
+  if (profile.email) {
+    const user = await getUserByEmail(profile.email);
+    if (!user) {
+      await createUser({
+        name: profile.name || profile.email.split('@')[0] as string,
+        email: profile.email,
+        password: null,
+      });
+    }
+  }
+}
 
 const isAccountVerified = (account: Account | null, profile?: Profile): boolean => {
   return account?.provider !== 'google' || !!profile?.email_verified;
@@ -82,11 +31,27 @@ export const isPrivateResource = (pathname: string) => {
   return !pathname.startsWith('/sign-in') && !pathname.startsWith('/sign-up');
 }
 
+export const authorizeCredentials = async (email: string, password: string): Promise<User | null> => {
+  const user = await getUserByEmail(email);
+  const doesPasswordMatch: boolean = !!user?.password && await bcrypt.compare(password, user.password);
+  return doesPasswordMatch ? user : null;
+}
+
 export const nextAuth: NextAuthConfig = {
   session: {
     strategy: 'jwt',
   },
   providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email', placeholder: 'john.doe@ztu.edu.ua', required: true },
+        password: { label: 'Password', type: 'password', required: true },
+      },
+      async authorize(credentials, req) {
+        return authorizeCredentials(credentials.email as string, credentials.password as string);
+      }
+    }),
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
@@ -98,19 +63,15 @@ export const nextAuth: NextAuthConfig = {
   ],
   callbacks: {
     async signIn({ account, profile }) {
-      if (!isAccountVerified(account, profile) || !profile?.email) {
-        return false;
+      let isSignInAllowed = true;
+      if (isOIDC(account)) {
+        if (!isAccountVerified(account, profile) || !profile?.email) {
+          isSignInAllowed = false;
+        } else {
+          await createOIDCUser(profile);
+        }
       }
-      // create a user if needed
-      const user = await getUserByEmail(profile.email);
-      if (!user) {
-        await createUser({
-          name: profile.name || profile.email.split('@')[0] as string,
-          email: profile.email,
-          password: null,
-        });
-      }
-      return true;
+      return isSignInAllowed;
     },
   }
 }

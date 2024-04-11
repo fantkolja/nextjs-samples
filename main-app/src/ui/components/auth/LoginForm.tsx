@@ -11,12 +11,11 @@ export interface LoginFormData {
 export default function LoginForm() {
   const onSubmit = async (formData: FormData) => {
     'use server'
-    await signIn('credentials');
-    // await login(
-    //   formData.get('email') as string,
-    //   formData.get('password') as string,
-    // );
-    // redirect('/');
+    await signIn('credentials', {
+      redirectTo: '/',
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
+    });
   };
   return (
     <div>
@@ -71,9 +70,6 @@ export default function LoginForm() {
           <Button className="mt-4 w-full bg-blue-700">
             Sign in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50"/>
           </Button>
-          <div className="flex h-8 items-end space-x-1">
-            {/* Add form errors here */}
-          </div>
         </div>
       </form>
       <div className="flex gap-4 justify-between">
