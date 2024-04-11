@@ -6,14 +6,15 @@ import { getUserByEmail } from '@/server/data/db';
 import bcrypt from 'bcryptjs';
 
 const SESSION_COOKIE_NAME = 'session';
-const SESSION_DURATION = 10 * 1000;
+const SESSION_DURATION_IN_SECONDS = 10;
+const SESSION_DURATION = SESSION_DURATION_IN_SECONDS * 1000;
 const jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export async function encrypt(payload: { user: User, expires: Date }) {
   return await new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
+    .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime("10 sec from now")
+    .setExpirationTime(`${SESSION_DURATION_IN_SECONDS} sec from now`)
     .sign(jwtSecret);
 }
 
