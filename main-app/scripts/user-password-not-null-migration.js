@@ -2,7 +2,7 @@ const { sql } = require('@vercel/postgres');
 
 const main = async () => {
   await sql`
-    ALTER TABLE users ALTER COLUMN password SET NOT NULL;
+    ALTER TABLE users ALTER COLUMN password DROP NOT NULL;
   `
 }
 
