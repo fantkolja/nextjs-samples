@@ -18,9 +18,9 @@ export default function LoginForm() {
     });
   };
   return (
-    <div>
+    <div className="w-full">
       <form className="space-y-3 w-full" action={onSubmit}>
-        <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8 text-gray-900">
+        <div className="flex-1 rounded-lg bg-gray-50 px-6 py-8 text-gray-900">
           <h1 className="mb-3 text-2xl text-black text-center">
             Sign in
           </h1>
