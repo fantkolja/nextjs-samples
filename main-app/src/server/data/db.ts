@@ -1,7 +1,7 @@
 import { sql } from '@vercel/postgres';
 import { Customer, CustomerPayload } from '@/types/customer';
 import bcrypt from 'bcryptjs';
-import { User, UserDBEntry, UserPayload } from '@/types/user';
+import { UserDBEntry, UserPayload } from '@/types/user';
 
 export const getCustomers = async () => {
   console.log('[DB] Query Customers');

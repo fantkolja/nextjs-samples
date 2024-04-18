@@ -1,10 +1,13 @@
 import { Post } from '@/types/posts';
+import { fetchAllCustomers } from '@/server/data/fetcher';
 
 export interface DocsInfoProps {
   docs: Post[];
 }
 
-export const DocsInfo: React.FC<DocsInfoProps> = ({ docs }) => {
+export const DocsInfo: React.FC<DocsInfoProps> = async ({ docs }) => {
+  await fetchAllCustomers();
+
   return (
     <div>
       <h2 className="text-center text-4xl">
