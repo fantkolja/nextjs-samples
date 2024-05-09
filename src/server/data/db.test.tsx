@@ -1,4 +1,4 @@
-import { customers } from '../../mocks/customers';
+import { customers } from '../../../mocks/customers';
 import { getCustomers } from '@/server/data/db';
 import { sql } from '@vercel/postgres';
 

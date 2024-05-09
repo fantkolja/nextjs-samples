@@ -11,7 +11,7 @@ on:
       - completed
 
 jobs:
-  Deploy-Preview:
+  deploy-preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
