@@ -1,5 +1,5 @@
 import { fetchAllPosts } from '@/server/data/fetcher';
-import { customers } from '../../mocks/customers';
+import { customers } from '../../../mocks/customers';
 
 // global.fetch = jest.fn().mockResolvedValue({});
 // @ts-ignore
