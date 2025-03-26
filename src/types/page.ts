@@ -3,5 +3,5 @@ export interface LayoutProps {
 }
 
 export interface PageProps<T = {}> {
-  params: T;
+  params: Promise<T>;
 }
