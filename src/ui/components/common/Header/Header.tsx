@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -10,7 +12,7 @@ export const Header = () => {
           className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
           href="/"
         >
-          By{" "}
+          {process.env.ENV_WELCOME || 'By'}{" "}
           <Image
             src="/zdtu-white.svg"
             alt="ZDTU Logo"
