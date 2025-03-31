@@ -13,7 +13,7 @@ export const Header = () => {
           className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
           href="/"
         >
-          {process.env.NEXT_PUBLIC_HEADER_WELCOME || 'By'}{" "}
+          {process.env.NEXT_PUBLIC_HEADER_WELCOME}{" "}
           <Image
             src="/zdtu-white.svg"
             alt="ZDTU Logo"
