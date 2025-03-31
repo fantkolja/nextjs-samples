@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const Header = () => {
+  console.log(process.env.NEXT_PUBLIC_HEADER_WELCOME);
   return (
     <div className="z-10 max-w-5xl w-full items-center justify-end font-mono text-sm lg:flex">
       <div
@@ -12,7 +13,7 @@ export const Header = () => {
           className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
           href="/"
         >
-          {process.env.ENV_WELCOME || 'By'}{" "}
+          {process.env.NEXT_PUBLIC_HEADER_WELCOME || 'By'}{" "}
           <Image
             src="/zdtu-white.svg"
             alt="ZDTU Logo"
