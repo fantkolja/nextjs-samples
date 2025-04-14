@@ -1,7 +1,7 @@
 const { db } = require('@vercel/postgres');
 const { users} = require('../mocks/users');
-const { customers} = require('../mocks/customers');
-const { invoices} = require('../mocks/invoices');
+const { customers } = require('../mocks/customers');
+const { invoices } = require('../mocks/invoices');
 const { revenue } = require('../mocks/revenue');
 const bcrypt = require('bcrypt');
 
