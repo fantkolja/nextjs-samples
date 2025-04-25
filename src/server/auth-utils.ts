@@ -28,7 +28,8 @@ const isAccountVerified = (account?: Account | null, profile?: Profile): boolean
 }
 
 export const isPrivateResource = (pathname: string) => {
-  return !pathname.startsWith('/sign-in') && !pathname.startsWith('/sign-up');
+  const publicPathnames = ['/sign-in', '/sign-up'];
+  return publicPathnames.every(publicPathname => !pathname.startsWith(publicPathname));
 }
 
 export const authorizeCredentials = async (email: string, password: string): Promise<User | null> => {
@@ -44,10 +45,10 @@ export const nextAuth: NextAuthConfig = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'john.doe@ztu.edu.ua', required: true },
-        password: { label: 'Password', type: 'password', required: true },
-      },
+      // credentials: {
+      //   email: { label: 'Email', type: 'email', placeholder: 'john.doe@ztu.edu.ua', required: true },
+      //   password: { label: 'Password', type: 'password', required: true },
+      // },
       async authorize(credentials, req) {
         return authorizeCredentials(credentials.email as string, credentials.password as string);
       }
@@ -85,6 +86,9 @@ export const nextAuth: NextAuthConfig = {
       },
     },
   },
+  pages: {
+    signIn: '/sign-in',
+  }
 }
 
 export const {
