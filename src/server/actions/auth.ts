@@ -17,7 +17,7 @@ export const onGithubSignIn = async () => {
 }
 
 export const onGoogleSignIn = async () => {
-  await signIn('github');
+  await signIn('google');
 }
 
 export const onSignUp = async (formData: FormData) => {
