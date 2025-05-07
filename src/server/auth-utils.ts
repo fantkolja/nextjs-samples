@@ -6,7 +6,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import NextAuth, { Account, NextAuthConfig, Profile } from 'next-auth';
 
-const isOIDC = (account: Account | null): boolean => {
+export const isOIDC = (account?: Account | null): boolean => {
   return account?.provider === 'google' || account?.provider === 'github';
 }
 
@@ -23,7 +23,7 @@ const createOIDCUser = async (profile: Profile) => {
   }
 }
 
-const isAccountVerified = (account: Account | null, profile?: Profile): boolean => {
+const isAccountVerified = (account?: Account | null, profile?: Profile): boolean => {
   return account?.provider !== 'google' || !!profile?.email_verified;
 }
 
