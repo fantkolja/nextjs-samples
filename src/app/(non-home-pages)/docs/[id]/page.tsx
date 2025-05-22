@@ -5,7 +5,13 @@ interface DocDetailsPageParams {
   id: string;
 }
 
-export default async function DocDetailsPage({ params: { id } }: PageProps<DocDetailsPageParams>) {
+export default async function DocDetailsPage(props: PageProps<DocDetailsPageParams>) {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const doc = await fetchPost(Number(id));
 
   return (

@@ -6,13 +6,15 @@ export interface PageParams {
   id: string;
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: PageParams }) {
+export async function DELETE(_req: NextRequest, props: { params: Promise<PageParams> }) {
+  const params = await props.params;
   const result = await deleteCustomer(params.id);
 
   return Response.json({ count: result.rowCount });
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: PageParams }) {
+export async function PATCH(request: NextRequest, props: { params: Promise<PageParams> }) {
+  const params = await props.params;
   const updatedFields = await request.json();
   const result = await updateCustomer(params.id, updatedFields as Partial<CustomerPayload>);
 
