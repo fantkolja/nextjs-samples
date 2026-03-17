@@ -8,7 +8,7 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({ children, className }) => {
   return (
-    <div className={clsx('border border-blue-800 bg-blue-200 rounded text-blue-800 p-6', className)}>
+    <div className={clsx('border border-blue-800 bg-blue-200 rounded-sm text-blue-800 p-6', className)}>
       {children}
     </div>
   );

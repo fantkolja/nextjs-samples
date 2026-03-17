@@ -13,7 +13,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({ href, heading, description, 
   return (
     <Link
       href={href}
-      className={clsx('group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30', className)}
+      className={clsx('group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 dark:hover:border-neutral-700 dark:hover:bg-neutral-800/30', className)}
     >
       <h2 className={`mb-3 text-2xl font-semibold`}>
         {heading}{" "}
