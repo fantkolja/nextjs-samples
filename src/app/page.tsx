@@ -13,8 +13,8 @@ export default async function Home() {
       <Logo />
       <p>{process.env.NEXT_PUBLIC_ENV_WELCOME}</p>
       <p>You have {customers.length} customers</p>
-      {/* <p>{process.env.NEXT_PUBLIC_PUBLIC_WORD}</p> */}
-
+      <p>{process.env.NEXT_PUBLIC_PUBLIC_WORD}</p>
+      <p>{process.env.SECRET_WORD}</p>
       <Menu />
     </main>
   );
